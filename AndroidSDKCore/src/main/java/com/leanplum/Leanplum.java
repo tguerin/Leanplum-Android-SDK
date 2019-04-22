@@ -1535,6 +1535,24 @@ public class Leanplum {
             true);
         params.put(Constants.Params.USER_ATTRIBUTES, JsonConverter.toJson(userAttributes));
         LeanplumInternal.getUserAttributeChanges().add(userAttributes);
+      } else {
+        // If userAttributes are null, then set user location and add the location for new user.
+        LocationManager locationManager = ActionManager.getLocationManager();
+        if (locationManager != null) {
+          locationManager.updateUserLocation();
+        }
+        // If user does not have location permission, then set default detect.
+        else {
+          Map<String, String>  userAttributesValues = new HashMap<>();
+          userAttributesValues.put(Constants.Keys.COUNTRY, Constants.Values.DETECT);
+          userAttributesValues.put(Constants.Keys.REGION, Constants.Values.DETECT);
+          userAttributesValues.put(Constants.Keys.CITY, Constants.Values.DETECT);
+          userAttributesValues.put(Constants.Keys.LOCATION, Constants.Values.DETECT);
+          userAttributes = LeanplumInternal.validateAttributes(userAttributesValues, "userAttributes",
+              true);
+          params.put(Constants.Params.USER_ATTRIBUTES, JsonConverter.toJson(userAttributes));
+          LeanplumInternal.getUserAttributeChanges().add(userAttributes);
+        }
       }
 
       if (LeanplumInternal.issuedStart()) {
