@@ -22,8 +22,10 @@
 package com.leanplum;
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -54,6 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 class GeofenceStatus {
   static final int UNKNOWN = 1;
@@ -122,6 +126,7 @@ class LocationManagerImplementation implements
     // When an app starts LocationManager will be initialized. Update user location.
     updateUserLocation();
   }
+
 
   @SuppressWarnings("unchecked")
   public void setRegionsData(Map<String, Object> regionData,

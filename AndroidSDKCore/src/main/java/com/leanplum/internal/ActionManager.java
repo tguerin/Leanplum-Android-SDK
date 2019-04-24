@@ -21,7 +21,10 @@
 
 package com.leanplum.internal;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 
 import com.leanplum.ActionContext;
@@ -36,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 /**
  * Handles in-app and push messaging.
@@ -103,7 +108,20 @@ public class ActionManager {
     sessionOccurrences = new HashMap<>();
     messageImpressionOccurrences = new HashMap<>();
     messageTriggerOccurrences = new HashMap<>();
+    Context context = Leanplum.getContext();
+    LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver,
+        new IntentFilter("custom-event-name"));
   }
+
+  // Our handler for received Intents. This will be called whenever an Intent
+// with an action named "custom-event-name" is broadcasted.
+  private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      // Get extra data included in the Intent
+      locationManager.updateUserLocation();
+    }
+  };
 
   private void listenForLocalNotifications() {
     Leanplum.onAction(PUSH_NOTIFICATION_ACTION_NAME, new ActionCallback() {
