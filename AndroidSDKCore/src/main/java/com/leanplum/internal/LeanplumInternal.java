@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -626,7 +627,7 @@ public class LeanplumInternal {
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private static boolean isValidScalarValue(Object value, String argName) {
-    if (!(value instanceof Number) && !(value instanceof String) && !(value instanceof Boolean)) {
+    if (!(value instanceof Number) && !(value instanceof String) && !(value instanceof Boolean) && !(value instanceof String[])) {
       maybeThrowException(new LeanplumException(
           argName + " values must be of type String, Number, or Boolean."));
       return false;
