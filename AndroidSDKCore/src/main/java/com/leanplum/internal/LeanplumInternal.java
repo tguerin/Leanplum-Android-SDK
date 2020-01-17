@@ -627,7 +627,7 @@ public class LeanplumInternal {
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private static boolean isValidScalarValue(Object value, String argName) {
-    if (!(value instanceof Number) && !(value instanceof String) && !(value instanceof Boolean) && !(value instanceof String[])) {
+    if (!(value instanceof Number) && !(value instanceof String) && !(value instanceof Boolean) && !(value instanceof String[]) && !(value instanceof List)) {
       maybeThrowException(new LeanplumException(
           argName + " values must be of type String, Number, or Boolean."));
       return false;
